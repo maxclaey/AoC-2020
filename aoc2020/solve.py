@@ -67,3 +67,7 @@ def main() -> None:
         level = logging.INFO
     logging.basicConfig(level=level)
     run(day=args.day)
+
+
+if __name__ == "__main__":
+    main()
