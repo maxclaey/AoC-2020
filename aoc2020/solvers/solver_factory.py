@@ -21,7 +21,7 @@ class SolverFactory:
     @classmethod
     def register(cls, day: int):
 
-        def wrapper(solver_class: PuzzleSolver) -> PuzzleSolver:
+        def wrapper(solver_class: Type[PuzzleSolver]) -> Type[PuzzleSolver]:
             if day in cls.registry:
                 logger.warning(
                     f"Solver for day {day} already exists. Will overwrite it"
