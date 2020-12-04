@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -29,7 +29,7 @@ class SolverDay1(PuzzleSolver):
 
     def solve_1(self) -> int:
         # Count the occurrences of each value
-        value_occ = defaultdict(int)
+        value_occ: Dict[int, int] = defaultdict(int)
         for val in self._input_data:
             value_occ[val] += 1
         # Loop over unique values to check solution
