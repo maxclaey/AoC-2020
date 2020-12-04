@@ -1,5 +1,6 @@
 import argparse
 import logging
+import time
 
 from aoc2020.data import DataFactory
 from aoc2020.solvers import PuzzleSolver, SolverFactory
@@ -10,7 +11,9 @@ logger = logging.getLogger("AoCRunner")
 
 def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
     correct = True
+    a = time.time()
     solution_1 = solver.solve_1()
+    b = time.time()
     if is_test:
         if solution_1 != solver.demo_result_1:
             logger.error(
@@ -19,9 +22,14 @@ def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
             )
             correct = False
     else:
-        logger.info(f"[Part one]: Solution is {solution_1}")
+        logger.info(
+            f"[Part one]: Solution is {solution_1} "
+            f"(solved in {(b-a)*1000.:.2f}ms)"
+        )
 
+    a = time.time()
     solution_2 = solver.solve_2()
+    b = time.time()
     if is_test:
         if solution_2 != solver.demo_result_2:
             logger.error(
@@ -30,7 +38,10 @@ def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
             )
             correct = False
     else:
-        logger.info(f"[Part two]: Solution is {solution_2}")
+        logger.info(
+            f"[Part two]: Solution is {solution_2} "
+            f"(solved in {(b-a)*1000.:.2f}ms)"
+        )
 
     if is_test and correct:
         logger.info(f"Congrats, both demo parts verified correctly!")
