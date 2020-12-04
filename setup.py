@@ -23,7 +23,10 @@ setuptools.setup(
     install_requires=requirements,
     include_package_data=True,
     entry_points={
-        'console_scripts': ['aoc2020-solver=aoc2020.solve:main'],
+        'console_scripts': [
+            'aoc2020-solver=aoc2020.solve:main',
+            'aoc2020-init=aoc2020.utils.init_solution:main',
+        ],
     },
     python_requires='>=3.6',
 )
