@@ -26,7 +26,8 @@ def init_solution(data_folder: Path, solver_folder: Path, day: int):
 
     # Check if solver folder is valid
     impl_folder = solver_folder / "implementations"
-    if not impl_folder.is_dir():
+    init_file = impl_folder / "__init__.py"
+    if not impl_folder.is_dir() or not init_file.is_file():
         logger.error(f"'{str(solver_folder)}' is not a valid solver folder")
         return
 
@@ -51,6 +52,22 @@ def init_solution(data_folder: Path, solver_folder: Path, day: int):
     rendered = t.render(day=day)
     with script_file.open(mode="w") as f:
         f.write(rendered)
+
+    # Add import statements to the init file
+    IMPORT_PH1 = "# IMPORT_PH1"
+    IMPORT_PH2 = "# IMPORT_PH2"
+    with init_file.open(mode="r") as f:
+        content = f.read()
+    content = content.replace(
+        IMPORT_PH1,
+        f"from .day{day} import SolverDay{day}\n{IMPORT_PH1}"
+    )
+    content = content.replace(
+        IMPORT_PH2,
+        f"\"SolverDay{day}\",\n    {IMPORT_PH2}"
+    )
+    with init_file.open(mode="w") as f:
+        f.write(content)
 
     # Create empty data files
     with demo_file.open(mode="w"):
