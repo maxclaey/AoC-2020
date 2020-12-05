@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -13,14 +13,12 @@ class SolverDay${day}(PuzzleSolver):
         super().__init__(input_file=input_file)
 
     @property
-    def demo_result_1(self) -> int:
-        logger.warning(f"Demo result 1 for day ${day} not available yet")
-        return 0
+    def demo_result_1(self) -> Optional[int]:
+        return None
 
     @property
-    def demo_result_2(self) -> int:
-        logger.warning(f"Demo result 2 for day ${day} not available yet")
-        return 0
+    def demo_result_2(self) -> Optional[int]:
+        return None
 
     def _read_file(self) -> Any:
         return None

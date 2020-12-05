@@ -1,7 +1,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -12,12 +12,12 @@ logger = logging.getLogger("SolverDay4")
 class SolverDay4(PuzzleSolver):
 
     @property
-    def demo_result_1(self) -> int:
+    def demo_result_1(self) -> Optional[int]:
         return 2
 
     @property
-    def demo_result_2(self) -> int:
-        return 2
+    def demo_result_2(self) -> Optional[int]:
+        return None
 
     def _read_file(self) -> List[Dict[str, str]]:
         passwords: List[Dict[str, str]] = []

@@ -1,7 +1,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -31,11 +31,11 @@ class SolverDay2(PuzzleSolver):
         return values
 
     @property
-    def demo_result_1(self) -> int:
+    def demo_result_1(self) -> Optional[int]:
         return 2
 
     @property
-    def demo_result_2(self) -> int:
+    def demo_result_2(self) -> Optional[int]:
         return 1
 
     def solve_1(self) -> int:

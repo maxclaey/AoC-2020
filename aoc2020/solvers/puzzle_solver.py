@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 
 class PuzzleSolver(ABC):
@@ -11,12 +11,12 @@ class PuzzleSolver(ABC):
     # ABSTRACT PROPERTIES
     @property
     @abstractmethod
-    def demo_result_1(self) -> int:
+    def demo_result_1(self) -> Optional[int]:
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def demo_result_2(self) -> int:
+    def demo_result_2(self) -> Optional[int]:
         raise NotImplementedError
 
     # ABSTRACT SOLVER METHODS

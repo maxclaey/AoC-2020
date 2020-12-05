@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -14,11 +15,11 @@ class SolverDay3(PuzzleSolver):
         super().__init__(input_file=input_file)
 
     @property
-    def demo_result_1(self) -> int:
+    def demo_result_1(self) -> Optional[int]:
         return 7
 
     @property
-    def demo_result_2(self) -> int:
+    def demo_result_2(self) -> Optional[int]:
         return 336
 
     def _read_file(self) -> np.ndarray:

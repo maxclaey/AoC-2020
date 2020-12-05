@@ -15,7 +15,9 @@ def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
     solution_1 = solver.solve_1()
     b = time.time()
     if is_test:
-        if solution_1 != solver.demo_result_1:
+        if solver.demo_result_1 is None:
+            logger.warning(f"No demo result available for part one")
+        elif solution_1 != solver.demo_result_1:
             logger.error(
                 f"[Part one] Expected result {solver.demo_result_1}, "
                 f"got {solution_1}."
@@ -31,7 +33,9 @@ def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
     solution_2 = solver.solve_2()
     b = time.time()
     if is_test:
-        if solution_2 != solver.demo_result_2:
+        if solver.demo_result_2 is None:
+            logger.warning(f"No demo result available for part two")
+        elif solution_2 != solver.demo_result_2:
             logger.error(
                 f"[Part two] Expected result {solver.demo_result_2}, "
                 f"got {solution_2}."

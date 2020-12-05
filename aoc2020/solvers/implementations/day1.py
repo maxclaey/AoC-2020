@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -15,11 +15,11 @@ class SolverDay1(PuzzleSolver):
         super().__init__(input_file=input_file)
 
     @property
-    def demo_result_1(self) -> int:
+    def demo_result_1(self) -> Optional[int]:
         return 514579
 
     @property
-    def demo_result_2(self) -> int:
+    def demo_result_2(self) -> Optional[int]:
         return 241861950
 
     def _read_file(self) -> List[int]:
