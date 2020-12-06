@@ -51,20 +51,22 @@ def run_solver(solver: PuzzleSolver, is_test: bool) -> None:
         logger.info(f"Congrats, both demo parts verified correctly!")
 
 
-def run(day: int) -> None:
+def run(day: int, demo_only: bool) -> None:
     demo_file = DataFactory.get_demo_file(day=day)
     demo_solver = SolverFactory.create_solver(day=day, input_file=demo_file)
-    general_file = DataFactory.get_input_file(day=day)
-    general_solver = SolverFactory.create_solver(day=day, input_file=general_file)
 
     # Run demo
     logger.info(f"Running demo")
     run_solver(solver=demo_solver, is_test=True)
     logger.info(f"")
 
-    # Run actual solver
-    logger.info(f"Running solver")
-    run_solver(solver=general_solver, is_test=False)
+    if not demo_only:
+        general_file = DataFactory.get_input_file(day=day)
+        general_solver = SolverFactory.create_solver(day=day, input_file=general_file)
+
+        # Run actual solver
+        logger.info(f"Running solver")
+        run_solver(solver=general_solver, is_test=False)
 
 
 def main() -> None:
@@ -75,13 +77,16 @@ def main() -> None:
     parser.add_argument(
         "-v", "--verbose", help="Output debug logging", action="store_true"
     )
+    parser.add_argument(
+        "-d", "--demo", help="Only run on demo input", action="store_true"
+    )
     args = parser.parse_args()
     if args.verbose:
         level = logging.DEBUG
     else:
         level = logging.INFO
     logging.basicConfig(level=level)
-    run(day=args.day)
+    run(day=args.day, demo_only=args.demo)
 
 
 if __name__ == "__main__":
