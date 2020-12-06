@@ -3,6 +3,7 @@ from .day2 import SolverDay2
 from .day3 import SolverDay3
 from .day4 import SolverDay4
 from .day5 import SolverDay5
+from .day6 import SolverDay6
 # IMPORT_PH1
 
 __all__ = [
@@ -11,5 +12,6 @@ __all__ = [
     "SolverDay3",
     "SolverDay4",
     "SolverDay5",
+    "SolverDay6",
     # IMPORT_PH2
 ]
