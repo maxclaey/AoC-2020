@@ -1,7 +1,7 @@
 import logging
 from collections import deque
 from pathlib import Path
-from typing import List, Optional
+from typing import Deque, List, Optional
 
 from aoc2020.solvers import PuzzleSolver, SolverFactory
 
@@ -23,7 +23,7 @@ class SolverDay9(PuzzleSolver):
 
     def _read_file(self) -> List[int]:
         values: List[int] = []
-        with open(self._input_file, mode="r") as f:
+        with self._input_file.open(mode="r") as f:
             for line in f:
                 try:
                     val = int(line.strip())
@@ -48,7 +48,7 @@ class SolverDay9(PuzzleSolver):
             preamble_size = 5
         else:
             preamble_size = 25
-        prev_numbers = deque(maxlen=preamble_size)
+        prev_numbers: Deque[int] = deque(maxlen=preamble_size)
         for value in self._input_data:
             if len(prev_numbers) == preamble_size:
                 if not self._is_sum(values=list(prev_numbers), value=value):

@@ -25,7 +25,7 @@ class SolverDay6(PuzzleSolver):
         groups: List[List[Set[str]]] = []
         # List of persons, unique question chars for each person
         cur_group: List[Set[str]] = []
-        with open(self._input_file, mode="r") as f:
+        with self._input_file.open(mode="r") as f:
             for line in f:
                 line = line.strip()
                 if len(line) == 0:
@@ -58,7 +58,7 @@ class SolverDay6(PuzzleSolver):
                     commons = person
                 else:
                     commons = commons.intersection(person)
-            count = len(commons)
+            count = len(commons) if commons else 0
             logger.debug(f"Common count in current group: {count}")
             tot_count += count
         return tot_count

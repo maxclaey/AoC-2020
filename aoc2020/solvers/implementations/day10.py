@@ -35,7 +35,7 @@ class SolverDay10(PuzzleSolver):
 
     def solve_1(self) -> int:
         cur_jolt = 0
-        differences = defaultdict(int)
+        differences: Dict[int, int] = defaultdict(int)
         for adapter in self._input_data:
             diff = adapter - cur_jolt
             if diff not in self.allowed_diffs:

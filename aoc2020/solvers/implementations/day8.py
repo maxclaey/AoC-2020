@@ -47,6 +47,8 @@ class SolverDay8(PuzzleSolver):
             return index + 1
         elif instruction == "jmp":
             return index + step
+        else:
+            raise ValueError(f"Invalid instruction {instruction}")
 
     def _run_program(self) -> bool:
         visited_indices = set()
