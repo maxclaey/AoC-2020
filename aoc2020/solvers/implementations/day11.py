@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Callable, List, Optional
+from typing import Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -13,6 +13,8 @@ logger = logging.getLogger("SolverDay11")
 class SolverDay11(PuzzleSolver):
     def __init__(self, input_file: Path):
         super().__init__(input_file=input_file)
+        self._search_domains: Dict[Tuple[int, int], List[List[Tuple[int, int]]]] = {}
+        self._create_search_domains()
 
     @property
     def demo_result_1(self) -> Optional[int]:
@@ -72,60 +74,37 @@ class SolverDay11(PuzzleSolver):
         # Count occupied neighbours, exclude current position
         return np.sum(neighbourhood) - max(0, state[row][col])
 
-    @staticmethod
-    def _occupied_closest_neightbours(
-        state: np.ndarray, row: int, col: int
+    def _occupied_closest_neighbours(
+        self, state: np.ndarray, row: int, col: int
     ) -> int:
-        occupied = 0
-        # Search UP
-        for r in reversed(range(row)):
-            if state[r][col] < 0:
-                continue
-            occupied += state[r][col]
-            break
-        # Search DOWN
-        for r in range(row+1, state.shape[0]):
-            if state[r][col] < 0:
-                continue
-            occupied += state[r][col]
-            break
-        # Search LEFT
-        for c in reversed(range(col)):
-            if state[row][c] < 0:
-                continue
-            occupied += state[row][c]
-            break
-        # Search RIGHT
-        for c in range(col+1, state.shape[1]):
-            if state[row][c] < 0:
-                continue
-            occupied += state[row][c]
-            break
-        # Search UP-LEFT
-        for i in range(1, min(col+1, row+1)):
-            if state[row-i][col-i] < 0:
-                continue
-            occupied += state[row-i][col-i]
-            break
-        # Search DOWN-RIGHT
-        for i in range(1, min(state.shape[0]-row, state.shape[1]-col)):
-            if state[row+i][col+i] < 0:
-                continue
-            occupied += state[row+i][col+i]
-            break
-        # Search UP-RIGHT
-        for i in range(1, min(row+1, state.shape[1]-col)):
-            if state[row-i][col+i] < 0:
-                continue
-            occupied += state[row-i][col+i]
-            break
-        # Search DOWN-LEFT
-        for i in range(1, min(col+1, state.shape[0]-row)):
-            if state[row+i][col-i] < 0:
-                continue
-            occupied += state[row+i][col-i]
-            break
+        occupied: int = 0
+        for domain in self._search_domains[(row, col)]:
+            for r, c in domain:
+                if state[r][c] < 0:
+                    continue
+                occupied += state[r][c]
+                break
+
         return occupied
+
+    def _create_search_domains(self) -> None:
+        for row in range(self._input_data.shape[0]):
+            for col in range(self._input_data.shape[1]):
+                # Define motion room
+                up_room: int = row+1
+                down_room: int = self._input_data.shape[0]-row
+                left_room: int = col+1
+                right_room: int = self._input_data.shape[1]-col
+                self._search_domains[(row, col)] = [
+                    [(row-i, col) for i in range(1, up_room)],  # Up
+                    [(row+i, col) for i in range(1, down_room)],  # Down
+                    [(row, col-i) for i in range(1, left_room)],  # Left
+                    [(row, col+i) for i in range(1, right_room)],  # Right
+                    [(row-i, col-i) for i in range(1, min(up_room, left_room))],  # Up-left
+                    [(row+i, col+i) for i in range(1, min(down_room, right_room))],  # Down-right
+                    [(row-i, col+i) for i in range(1, min(up_room, right_room))],  # Up-right
+                    [(row+i, col-i) for i in range(1, min(down_room, left_room))],  # Down-left
+                ]
 
     def solve_1(self) -> int:
         state = self._input_data
@@ -144,7 +123,7 @@ class SolverDay11(PuzzleSolver):
         while True:
             new_state = self._apply_round(
                 state=state,
-                occ_fn=self._occupied_closest_neightbours,
+                occ_fn=self._occupied_closest_neighbours,
                 margin=5,
             )
             if np.array_equal(state, new_state):
