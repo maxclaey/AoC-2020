@@ -58,16 +58,13 @@ class SolverDay13(PuzzleSolver):
 
     def solve_2(self) -> int:
         _, bus_ids = self._input_data
-        # Extract the bus IDs and the time constraints
-        constraints: List[Tuple[int, int]] = [
-            (bus_id, idx)
-            for idx, bus_id in enumerate(bus_ids) if bus_id != -1
-        ]
         solution = 0
         freq = 1
         # For each bus, find the earliest time that fits the solution and
         #  the frequency with which the solution will reoccur
-        for bus_id, idx in constraints:
+        for idx, bus_id in enumerate(bus_ids):
+            if bus_id < 0:
+                continue
             # Count instead of range for infinite loop
             for timestamp in count(solution, freq):
                 # When current ts is a solution for this bus, break and store
