@@ -23,9 +23,9 @@ class SolverDay13(PuzzleSolver):
     def demo_result_2(self) -> Optional[int]:
         return 1068781
 
-    def _read_file(self) -> Tuple[int, List[str]]:
+    def _read_file(self) -> Tuple[int, List[int]]:
         timestamp: int = 0
-        busses: List[str] = []
+        bus_ids: List[int] = []
         with self._input_file.open(mode="r") as f:
             lines = [line.strip() for line in f]
             if len(lines) != 2:
@@ -33,38 +33,36 @@ class SolverDay13(PuzzleSolver):
             else:
                 timestamp = int(lines[0])
                 busses = lines[1].split(',')
-        return timestamp, busses
+                for bus in busses:
+                    try:
+                        bus_id = int(bus)
+                    except ValueError:
+                        bus_id = -1
+                    bus_ids.append(bus_id)
+        return timestamp, bus_ids
 
     def solve_1(self) -> int:
-        timestamp, busses = self._input_data
-        arrival_times: List[Tuple[int, int]] = []
-        for bus in busses:
-            try:
-                bus_id = int(bus)
-            except ValueError:
-                logger.debug(f"Non-numeric bus ID ignored")
+        ts, bus_ids = self._input_data
+        min_waiting_time: int = -1
+        earliest_bus_id: int = 0
+        for bus_id in bus_ids:
+            if bus_id < 0:
                 continue
-            waiting_time = np.ceil(timestamp / bus_id) * bus_id - timestamp
-            arrival_times.append((bus_id, waiting_time))
-        arrival_times = list(sorted(arrival_times, key=lambda x: x[1]))
-        if len(arrival_times) > 0:
-            winner = arrival_times[0]
-            return winner[0] * winner[1]
-        else:
-            logger.error(f"No solution found")
-            return 0
+            # Calculate the waiting time
+            waiting_time = int(np.ceil(ts / bus_id)) * bus_id - ts
+            # Keep track of lowest waiting time and earliest bus
+            if min_waiting_time < 0 or waiting_time < min_waiting_time:
+                min_waiting_time = waiting_time
+                earliest_bus_id = bus_id
+        return min_waiting_time * earliest_bus_id
 
     def solve_2(self) -> int:
-        constraints: List[Tuple[int, int]] = []
-        _, busses = self._input_data
+        _, bus_ids = self._input_data
         # Extract the bus IDs and the time constraints
-        for idx, bus in enumerate(busses):
-            try:
-                bus_id = int(bus)
-            except ValueError:
-                logger.debug(f"Non-numeric bus ID ignored")
-                continue
-            constraints.append((bus_id, idx))
+        constraints: List[Tuple[int, int]] = [
+            (bus_id, idx)
+            for idx, bus_id in enumerate(bus_ids) if bus_id != -1
+        ]
         solution = 0
         freq = 1
         # For each bus, find the earliest time that fits the solution and
