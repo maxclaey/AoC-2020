@@ -21,7 +21,9 @@ class SolverDay${day}(PuzzleSolver):
         return None
 
     def _read_file(self) -> Any:
-        return None
+        with open(self._input_file, mode="r") as f:
+            for line in f:
+                line = line.strip()
 
     def solve_1(self) -> int:
         logger.warning(f"Solution for puzzle 1 for day ${day} not implemented yet")
